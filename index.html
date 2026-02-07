@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Госуслуги</title>
+    
+    <!-- PWA мета-теги -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Госуслуги">
+    <meta name="theme-color" content="#d32f2f">
+    <meta name="description" content="Цифровые государственные услуги">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="shortcut icon" href="./favicon.ico">
+    <link rel="apple-touch-icon" href="./icon-192.png">
+    
+    <!-- Manifest -->
+    <link rel="manifest" href="./manifest.json">
+    
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .back-button {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            color: black;
+        }
+        .tab-container {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .tab.active {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .search-bar {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            background: #f0f0f0;
+        }
+        .search-bar input {
+            border: none;
+            background: none;
+            outline: none;
+            flex-grow: 1;
+            font-size: 16px;
+            padding-left: 10px;
+        }
+        .document {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .document:hover {
+            background: #f0f0f0;
+        }
+        .document:last-child {
+            border-bottom: none;
+        }
+        .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .document-text {
+            flex-grow: 1;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background: white;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0 20px;
+            width: calc(100% - 40px);
+            max-width: calc(500px - 40px);
+        }
+        .footer-item {
+            text-align: center;
+            color: #555;
+            cursor: pointer;
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer-item img {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 5px;
+        }
+        .footer-item.active {
+            font-weight: bold;
+            border-top: 2px solid red;
+        }
+        .search-bar img {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        .back-button:hover {
+            opacity: 0.7;
+        }
+        
+        /* Контейнер для документов */
+        .documents-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 80px; /* Отступ для футера */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="back-button" onclick="history.back()">&lt;</span>Госуслуги
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab active">Все услуги</div>
+            <div class="tab"><a href="./zayav.html">Мои заявки</a></div>
+        </div>
+        
+        <div class="search-bar">
+            <img src="./lupa.png" alt="Поиск" class="search-icon">
+            <input type="text" placeholder="Поиск по Госуслугам">
+        </div>
+        
+        <div class="documents-container">
+            <a href="./load.html">
+                <div class="document">
+                    <img src="./Mask group (3).png" class="icon"/>
+                    <div class="document-text">Цифровые документы</div>
+                </div>
+            </a>
+            <a href="#">
+                <div class="document">
+                    <img src="./Mask group (4).png" class="icon"/>
+                    <div class="document-text">Декларация по форме 250</div>
+                </div>
+            </a>
+            <a href="#">
+                <div class="document">
+                    <img src="./Mask group.png" class="icon"/>
+                    <div class="document-text">Переоформление автомобиля</div>
+                </div>
+            </a>
+            <a href="#">
+                <div class="document">
+                    <img src="./Mask group (2).png" class="icon"/>
+                    <div class="document-text">Изменение реквизитов и налогового режима ИП</div>
+                </div>
+            </a>
+            <a href="#">
+                <div class="document">
+                    <img src="./Mask group (1).png" class="icon"/>
+                    <div class="document-text">Пособия и выплаты</div>
+                </div>
+            </a>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-item active">
+                <img src="./free-icon-home-1946436.png" alt="Главная">
+                Главная
+            </div>
+            <div class="footer-item">
+                <img src="./free-icon-qr-code-8721150.png" alt="Kaspi QR">
+                Kaspi QR
+            </div>
+            <div class="footer-item">
+                <img src="./free-icon-sms-5094489.png" alt="Сообщения">
+                Сообщения
+            </div>
+            <div class="footer-item">
+                <img src="./free-icon-open-menu-5392911.png" alt="Сервисы">
+                Сервисы
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Регистрация Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('ServiceWorker зарегистрирован:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Ошибка регистрации ServiceWorker:', error);
+                    });
+            });
+        }
+        
+        // Обработка навигации
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                if (href !== '#') {
+                    window.location.href = href;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

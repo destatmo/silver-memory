@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ffffff">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка</title>
+    <link rel="manifest" href="./manifest.json">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: white;
+        }
+        .splash-screen {
+            text-align: center;
+        }
+        .splash-screen img {
+            width: 200px;
+            margin-bottom: 20px;
+        }
+        .splash-screen p {
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+    <script>
+        // Регистрация Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js');
+            });
+        }
+        
+        // Задержка перед переходом
+        setTimeout(() => {
+            window.location.href = "./udo.html";
+        }, 2000);
+    </script>
+</head>
+<body>
+    <div class="splash-screen">
+        <img src="./eg-removebg-preview.png" alt="Загрузка">
+        <p>При поддержке Министерства цифрового развития</p>
+    </div>
+</body>
+</html>

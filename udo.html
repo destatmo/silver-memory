@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ffffff">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Цифровые документы</title>
+    <link rel="manifest" href="./manifest.json">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .back-button {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            color: black;
+            transition: opacity 0.2s;
+        }
+        .section {
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #555;
+        }
+        .document {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            background: white;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .document:hover {
+            background: #f0f0f0;
+        }
+        .document:last-child {
+            border-bottom: none;
+        }
+        .icon {
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .document-text {
+            flex-grow: 1;
+        }
+        .update-button {
+            margin-top: auto;
+            padding: 15px;
+            text-align: center;
+            border: 2px solid #007bff;
+            color: #007bff;
+            background: white;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+        .update-button:hover {
+            background: #007bff;
+            color: white;
+        }
+        a {
+            color: black;
+            text-decoration: none;
+        }
+        .back-button:hover {
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="back-button" id="backBtn">&lt;</span>Цифровые документы
+        </div>
+        
+        <div class="section">Мои документы</div>
+        <a href="./index1.html">
+            <div class="document">
+                <img src="./card.png" class="icon"/>
+                <div class="document-text">Удостоверение личности</div>
+            </div>
+        </a>
+        <a href="./index1.html">
+            <div class="document">
+                <img src="./press-pass.png" class="icon"/>
+                <div class="document-text">Водительские права</div>
+            </div>
+        </a>
+        <a href="./index1.html">
+            <div class="document">
+                <img src="./id-card.png" class="icon"/>
+                <div class="document-text">Паспорт вакцинации</div>
+            </div>
+        </a>
+        <a href="./index1.html">
+            <div class="document">
+                <img src="./3416538.png" class="icon"/>
+                <div class="document-text">Паспорт гражданина РК</div>
+            </div>
+        </a>
+        
+        <div class="update-button" onclick="alert('Список документов обновлен!')">Обновить список документов</div>
+    </div>
+
+    <script>
+        // Регистрация Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js');
+        }
+        
+        // Обработчик для кнопки назад
+        document.getElementById('backBtn').addEventListener('click', function() {
+            window.location.href = './index.html';
+        });
+        
+        // Обработка навигации по ссылкам
+        document.querySelectorAll('a[href]').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                window.location.href = href;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#ffffff">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои заявки</title>
+    <link rel="manifest" href="./manifest.json">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            height: 100vh;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        .header {
+            display: flex;
+            align-items: center;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .back-button {
+            font-size: 24px;
+            cursor: pointer;
+            margin-right: 10px;
+            font-weight: bold;
+            text-decoration: none;
+            color: black;
+        }
+        .tab-container {
+            display: flex;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .tab.active {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        .empty-state {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 18px;
+            color: #666;
+        }
+        .history {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-top: 1px solid #ddd;
+            cursor: pointer;
+        }
+        .history-icon {
+            color: red;
+            margin-right: 10px;
+            font-size: 20px;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-around;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+            background: white;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0 20px;
+            width: calc(100% - 40px);
+            max-width: calc(500px - 40px);
+        }
+        .footer-item {
+            text-align: center;
+            color: #555;
+            cursor: pointer;
+            flex: 1;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .footer-item img {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 5px;
+        }
+        .footer-item.active {
+            font-weight: bold;
+            border-top: 2px solid red;
+        }
+        a{
+            text-decoration: none;
+            color: black;
+        }
+        .back-button:hover {
+            opacity: 0.7;
+        }
+        
+        /* Стили для секции сброса */
+        .reset-section {
+            margin-top: 30px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .reset-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+        
+        .reset-btn:hover {
+            background: #ff3838;
+        }
+        
+        .reset-btn:active {
+            transform: scale(0.98);
+        }
+        
+        .reset-info {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            line-height: 1.4;
+        }
+        
+        /* Контейнер для контента */
+        .content-container {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 80px; /* Отступ для футера */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <span class="back-button" onclick="history.back()">&lt;</span>Госуслуги
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab"><a href="./index.html">Все услуги</a></div>
+            <div class="tab active">Мои заявки</div>
+        </div>
+        
+        <div class="content-container">
+            <div class="empty-state">
+                <div>
+                    <img src="./free-icon-message-11067076.png" alt="Нет заявок" width="100" height="100">
+                </div>
+                <div>У вас нет активных заявок</div>
+            </div>
+            
+            <div class="history">
+                <div class="history-icon">
+                    <img src="./free-icon-clock-14090215.png" alt="История заявок" width="24" height="24">
+                </div>
+                <div>История заявок</div>
+            </div>
+            
+            <!-- Новая секция для сброса фото в разделе Мои заявки -->
+            <div class="reset-section">
+                <div class="reset-title">Управление данными</div>
+                <button class="reset-btn" onclick="resetAllData()">
+                    Сбросить все загруженные фото
+                </button>
+                <div class="reset-info">
+                    Удаляет все загруженные изображения документов из системы
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-item">
+                <img src="./free-icon-home-1946436.png" alt="Главная">
+                Главная
+            </div>
+            <div class="footer-item">
+                <img src="./free-icon-qr-code-8721150.png" alt="Kaspi QR">
+                Kaspi QR
+            </div>
+            <div class="footer-item">
+                <img src="./free-icon-sms-5094489.png" alt="Сообщения">
+                Сообщения
+            </div>
+            <div class="footer-item active">
+                <img src="./free-icon-open-menu-5392911.png" alt="Сервисы">
+                Сервисы
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Регистрация Service Worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('./sw.js');
+        }
+        
+        // Функция сброса всех данных
+        function resetAllData() {
+            if (confirm("Вы уверены, что хотите удалить все загруженные фотографии документов? Это действие нельзя отменить.")) {
+                // Удаляем загруженное фото из localStorage
+                localStorage.removeItem("uploadedImage");
+                
+                // Удаляем все реквизиты
+                for (let i = 0; i < 6; i++) {
+                    localStorage.removeItem('rekvizit' + i);
+                }
+                
+                // Показываем сообщение об успехе
+                alert("Все загруженные данные успешно удалены!");
+                
+                // Перезагружаем страницу, чтобы обновить состояние
+                setTimeout(() => {
+                    window.location.reload();
+                }, 500);
+            }
+        }
+    </script>
+</body>
+</html>

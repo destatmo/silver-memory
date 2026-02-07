@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+  <title>Kaspi.kz</title>
+  <link rel="stylesheet" href="style1.css" />
+  <link rel="manifest" href="manifest.json">
+  <style>
+    #preview {
+      margin: -50px 0 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-height: 60vh;
+      overflow: hidden;
+      touch-action: none;
+      position: relative;
+    }
+
+    .zoomable-image {
+      max-width: none;
+      max-height: none;
+      border-radius: 12px;
+      touch-action: none;
+      user-select: none;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform-origin: 0 0;
+    }
+
+    .copy-icon {
+      height: 18px !important;
+      width: 22px !important;
+    }
+  </style>
+</head>
+<!-- START: modal for QR -->
+<div id="qrOverlay" class="qr-overlay" aria-hidden="true">
+  <div class="qr-backdrop" id="qrBackdrop"></div>
+
+  <div class="qr-sheet" role="dialog" aria-modal="true" aria-label="Удостоверение личности">
+    <button class="qr-close" id="qrClose" aria-label="Закрыть">&times;</button>
+
+    <div class="qr-sheet-header">
+      <h2>Удостоверение личности</h2>
+    </div>
+
+    <div class="qr-sheet-body">
+      <p class="qr-instruction">Покажите QR-код сотруднику</p>
+
+      <div class="qr-image-wrap">
+        <img src="./qroo.jpg" alt="QR-код" class="qr-image">
+      </div>
+
+      <p class="qr-or">или скажите код</p>
+      <p class="qr-code">080824</p>
+    </div>
+  </div>
+</div>
+<!-- END: modal for QR -->
+
+<script>
+// Генерация случайного 6-значного кода
+function generateRandomCode() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Обновление кода каждые 3 минуты (180000 мс)
+function updateQRCode() {
+  const qrCodeElement = document.querySelector('.qr-code');
+  if (qrCodeElement) {
+    qrCodeElement.textContent = generateRandomCode();
+  }
+}
+
+// Обновляем код сразу при загрузке и затем каждые 3 минуты
+document.addEventListener('DOMContentLoaded', function() {
+  updateQRCode();
+  setInterval(updateQRCode, 180000); // 3 минуты = 180000 миллисекунд
+});
+
+(function(){
+  const openBtn = document.querySelector('#btnftr1');
+  const overlay = document.getElementById('qrOverlay');
+  const closeBtn = document.getElementById('qrClose');
+  const backdrop = document.getElementById('qrBackdrop');
+
+  if (!openBtn || !overlay) return;
+
+  function openModal() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  openBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    openModal();
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeModal();
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      closeModal();
+    }
+  });
+})();
+</script>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="title">
+        <img src="arrow.png" alt="" class="back-icon" onclick="window.location.href='udo.html'" style="cursor: pointer;" />
+        <h1 class="text-title">Удостоверение личности</h1>
+      </div>
+
+      <div class="tab">
+        <div class="btntab">
+          <input type="radio" id="tab-btn-1" name="tab-btn" checked />
+          <label for="tab-btn-1">Документ</label>
+
+          <input type="radio" id="tab-btn-2" name="tab-btn" />
+          <label for="tab-btn-2">Реквизиты</label>
+        </div>
+      </div>
+    </div>
+
+    <div id="doc" class="tab-content active">
+      <div class="middle">
+        <div class="img-upload">
+          <div id="upload-container">
+            <input type="file" id="idupload" accept="image/*" style="display: none;" />
+            <label for="idupload" id="upload-label"
+              style="padding: 12px 24px; background: #2b6bcc; color: white; border-radius: 10px; font-size: 16px; cursor: pointer; display: inline-block; margin-bottom: 20px;"
+            >Загрузить</label>
+            <div id="preview" style="display: flex; justify-content: center;"></div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <div class="btnfooter" id="docbtn">
+            <button id="btnftr1">
+              <img src="qr.png" alt="" class="qrbtn" />
+              Предъявить документ
+            </button>
+            <button id="btnftr2" class="share" style="margin-bottom: 20px;">
+              <img src="upload.png" alt="" class="uploadbtn" />
+              Отправить документ
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="req" class="tab-content">
+      <ul class="rekvizit">
+        <li>
+          <span class="atritem">ФИО</span>
+          <input type="text" maxlength="32" spellcheck="false" class="rekitem" id="1" style="margin-right: 25px;"/>
+          <img src="copy.png" alt="" class="copy-icon" />
+        </li>
+        <li>
+          <span class="atritem">ИИН</span>
+          <input type="text" maxlength="12" spellcheck="false" class="rekitem" id="2" style="margin-right: 25px;"/>
+          <img src="copy.png" alt="" class="copy-icon"  />
+        </li>
+        <li>
+          <span class="atritem">Дата рождения</span>
+          <input type="text" maxlength="10" spellcheck="false" class="rekitem" id="3" style="margin-right: 25px;"/>
+          <img src="copy.png" alt="" class="copy-icon" />
+        </li>
+        <li>
+          <span class="atritem">Номер документа</span>
+          <input type="text" maxlength="9" spellcheck="false" class="rekitem" id="4" style="margin-right: 25px;">
+          <img src="copy.png" alt="" class="copy-icon" />
+        </li>
+        <li>
+          <span class="atritem">Дата выдачи</span>
+          <input type="text" maxlength="10" spellcheck="false" class="rekitem" id="5" style="margin-right: 25px;">
+          <img src="copy.png" alt="" class="copy-icon" />
+        </li>
+        <li>
+          <span class="atritem">Срок действия</span>
+          <input type="text" maxlength="10" spellcheck="false" class="rekitem" id="6" style="margin-right: 25px;">
+          <img src="copy.png" alt="" class="copy-icon" />
+        </li>
+      </ul>
+
+        <div class="footer">
+          <div class="btnfooter" id="docbtn" style="margin-bottom: 150px; margin-top: -150px;">
+            <button id="btnftr2" class="share" style="margin-left: auto;">
+              <img src="upload.png" alt="" class="uploadbtn" />
+              Отправить реквизиты
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const input = document.getElementById("idupload");
+      const preview = document.getElementById("preview");
+      const label = document.getElementById("upload-label");
+      const tabBtn1 = document.getElementById("tab-btn-1");
+      const tabBtn2 = document.getElementById("tab-btn-2");
+      const doc = document.getElementById("doc");
+      const req = document.getElementById("req");
+
+      function showImage(src) {
+        const img = document.createElement("img");
+        img.src = src;
+        preview.innerHTML = "";
+        preview.appendChild(img);
+        label.style.display = "none";
+      }
+
+      function updateTabs() {
+        if (tabBtn1.checked) {
+          doc.classList.add("active");
+          req.classList.remove("active");
+
+          const saved = localStorage.getItem("uploadedImage");
+          if (saved) {
+            showImage(saved);
+          } else {
+            label.style.display = "inline-block";
+            preview.innerHTML = "";
+          }
+        } else {
+          req.classList.add("active");
+          doc.classList.remove("active");
+          label.style.display = "none";
+          preview.innerHTML = "";
+        }
+      }
+
+      tabBtn1.addEventListener("change", updateTabs);
+      tabBtn2.addEventListener("change", updateTabs);
+
+      // запуск по умолчанию
+      tabBtn1.checked = true;
+      updateTabs();
+
+      input.addEventListener("change", function () {
+        const file = this.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const src = e.target.result;
+          localStorage.setItem("uploadedImage", src);
+          showImage(src);
+        };
+        reader.readAsDataURL(file);
+      });
+            // сохранить реквизиты в localStorage
+      const rekvizitInputs = document.querySelectorAll('.rekvizit input');
+      rekvizitInputs.forEach((input, index) => {
+        const saved = localStorage.getItem('rekvizit' + index);
+        if (saved) input.value = saved;
+
+        input.addEventListener('input', () => {
+          localStorage.setItem('rekvizit' + index, input.value);
+        });
+      });
+
+    });
+    let startDistance = 0;
+let currentScale = 1;
+let startX = 0;
+let startY = 0;
+let currentX = 0;
+let currentY = 0;
+let isPanning = false;
+let lastScaleChange = 1;
+
+preview.addEventListener("touchstart", function(e) {
+  const img = preview.querySelector("img");
+  if (!img) return;
+
+  if (e.touches.length === 2) {
+    // Пинч-зум
+    startDistance = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    lastScaleChange = 1;
+    isPanning = false;
+  } else if (e.touches.length === 1 && currentScale > 1) {
+    // Панорамирование
+    isPanning = true;
+    startX = e.touches[0].clientX - currentX;
+    startY = e.touches[0].clientY - currentY;
+  }
+}, { passive: false });
+
+preview.addEventListener("touchmove", function(e) {
+  const img = preview.querySelector("img");
+  if (!img) return;
+  e.preventDefault();
+
+  if (e.touches.length === 2) {
+    // Пинч
+    const newDistance = Math.hypot(
+      e.touches[0].clientX - e.touches[1].clientX,
+      e.touches[0].clientY - e.touches[1].clientY
+    );
+    const scaleChange = newDistance / startDistance;
+    let newScale = currentScale * scaleChange;
+
+    // Не даем уменьшиться меньше 1
+    if (newScale < 1) newScale = 1;
+
+    img.style.transform = `translate(${currentX}px, ${currentY}px) scale(${newScale})`;
+    lastScaleChange = scaleChange;
+  } else if (e.touches.length === 1 && isPanning) {
+    // Перемещение
+    currentX = e.touches[0].clientX - startX;
+    currentY = e.touches[0].clientY - startY;
+    img.style.transform = `translate(${currentX}px, ${currentY}px) scale(${currentScale})`;
+  }
+}, { passive: false });
+
+preview.addEventListener("touchend", function(e) {
+  const img = preview.querySelector("img");
+  if (!img) return;
+
+  if (e.touches.length < 2) {
+    // Фиксируем масштаб после пинча
+    const style = window.getComputedStyle(img);
+    const matrix = new WebKitCSSMatrix(style.transform);
+    currentScale = Math.max(matrix.a, 1); // минимум 1
+  }
+});
+
+// QR modal open/close
+(function(){
+  const openBtn = document.querySelector('#btnftr1');
+  const overlay = document.getElementById('qrOverlay');
+  const closeBtn = document.getElementById('qrClose');
+  const backdrop = document.getElementById('qrBackdrop');
+
+  if (!openBtn || !overlay) return;
+
+  function openModal() {
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    // блокируем прокрутку страницы когда открыт модал
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeModal() {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  openBtn.addEventListener('click', function(e){
+    e.preventDefault();
+    openModal();
+  });
+
+  closeBtn.addEventListener('click', closeModal);
+  backdrop.addEventListener('click', closeModal);
+
+  // клик по области вне .qr-sheet также закрывает: делаем делегирование
+  overlay.addEventListener('click', function(e){
+    if (e.target === overlay) closeModal();
+  });
+
+  // Esc закрывает
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay.classList.contains('open')) {
+      closeModal();
+    }
+  });
+})();
+
+document.getElementById("btnftr2").addEventListener("click", async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Мой сайт",
+        text: "Посмотри это!",
+        url: window.location.href
+      });
+      console.log("Успешно поделились");
+    } catch (err) {
+      console.log("Ошибка или отмена", err);
+    }
+  } else {
+    alert("Ваш браузер не поддерживает системное меню поделиться");
+  }
+});
+
+
+  </script>
+</body>
+</html>
